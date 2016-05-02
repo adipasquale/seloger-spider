@@ -5,3 +5,4 @@ pytz==2015.7
 requests==2.9.1
 Flask==0.10.1
 uWSGI==2.0.12
+raygun4py==3.1.2

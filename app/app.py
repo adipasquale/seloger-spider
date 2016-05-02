@@ -2,8 +2,13 @@ from flask import Flask
 from flask import request
 import re
 import requests
+import os
+from raygun4py.middleware import flask
 
 app = Flask(__name__)
+if os.environ.get("RAYGUN_API_KEY"):
+  print "attaching raygun ..."
+  flask.Provider(app, os.environ["RAYGUN_API_KEY"]).attach()
 
 SCRAPYRT_ENDPOINT = "http://localhost:9080/crawl.json"
 
