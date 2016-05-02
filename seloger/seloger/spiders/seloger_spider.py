@@ -14,7 +14,11 @@ class SeLogerSpider(scrapy.Spider):
 
   def parse(self, response):
     offer = Offer()
+    offer["url"] = response.url
     offer["title"] = response.xpath('//meta[@property="og:title"]/@content').extract()[0]
-    offer["description"] = response.xpath('//meta[@property="og:description"]/@content').extract()[0]
+    offer["description"] = response.xpath('//meta[@property="og:description"]/@content').extract()[0].replace(r"Location", "").replace("appartement", "").strip()
     offer["images"] = response.xpath('//img[@class="carrousel-img"]/@src').extract()
+    offer["images"] = [i.replace("poliris.com/c175/", "poliris.com/bigs/") for i in offer["images"]]
+    offer["characteristics"] = response.css(".liste__item-switch, .liste__item-float, .liste__item").xpath("text()").extract()
+    offer["characteristics"] = [c.strip() for c in offer["characteristics"] if "DPE" not in c and "GES" not in c and c.strip()]
     yield offer

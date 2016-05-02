@@ -3,3 +3,4 @@ Scrapy==1.0.5
 pytz==2015.7
 
 requests==2.9.1
+Flask==0.10.1
