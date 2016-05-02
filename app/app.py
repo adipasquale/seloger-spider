@@ -15,8 +15,12 @@ SCRAPYRT_ENDPOINT = "http://localhost:9080/crawl.json"
 
 @app.route("/api/v1/received_seloger_mail", methods=["POST"])
 def crawl_and_mail():
-  print "request.form is %s" % request.form["stripped-html"]
   urls = set(re.findall(r"www\.seloger.com/annonces/locations/[a-z0-9\/\-]+.htm\?", request.form["stripped-html"]))
+
+  if len(urls) == 0:
+    raise Exception("no urls found")
+
+  print "found %s urls, enqueuing them for crawling..." % len(urls)
 
   for url in urls:
     r = requests.post(SCRAPYRT_ENDPOINT, json={
