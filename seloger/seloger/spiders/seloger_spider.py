@@ -1,6 +1,12 @@
+# -*- coding: utf-8 -*-
+
 import scrapy
 
 from seloger.items import Offer
+
+IGNORE_WORDS_IN_TITLE = [
+  "Location", "Appartement", "2 pièces", "appartement F2/T2/2 pièces"
+]
 
 class SeLogerSpider(scrapy.Spider):
   name = "seloger"
@@ -16,9 +22,11 @@ class SeLogerSpider(scrapy.Spider):
     offer = Offer()
     offer["url"] = response.url
     offer["title"] = response.xpath('//meta[@property="og:title"]/@content').extract()[0]
-    offer["description"] = response.xpath('//meta[@property="og:description"]/@content').extract()[0].replace(r"Location", "").replace("appartement", "").strip()
-    offer["images"] = response.xpath('//img[@class="carrousel-img"]/@src').extract()
-    offer["images"] = [i.replace("poliris.com/c175/", "poliris.com/bigs/") for i in offer["images"]]
+    for word in IGNORE_WORDS_IN_TITLE:
+      offer["title"] = offer["title"].replace(word, "")
+    offer["title"].strip()
+    offer["description"] = response.xpath('//meta[@property="og:description"]/@content').extract()[0].strip()
+    offer["images"] = response.css('.carrousel_image_small::attr("src")').extract()
     offer["characteristics"] = response.css(".liste__item-switch, .liste__item-float, .liste__item").xpath("text()").extract()
     offer["characteristics"] = [c.strip() for c in offer["characteristics"] if "DPE" not in c and "GES" not in c and c.strip()]
     yield offer

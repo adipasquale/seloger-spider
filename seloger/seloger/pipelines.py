@@ -7,7 +7,7 @@ import os
 class SendMail(object):
   def process_item(self, item, spider):
 
-    images_html = "".join(["<li style='margin:10px;padding:0;display:inline;'><img src='%s' style='max-width:300px;' /></li>" % img for img in item["images"]])
+    images_html = "".join(["<li style='margin:10px;padding:0;display:inline;'><img src='%s' style='max-width:400px;' /></li>" % img for img in item["images"]])
     characteristics_html = "".join(["<li>%s</li>" % c for c in item["characteristics"]])
     html = """
       <b>%s</b>
