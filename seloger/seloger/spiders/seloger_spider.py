@@ -5,14 +5,14 @@ import scrapy
 from seloger.items import Offer
 
 IGNORE_WORDS_IN_TITLE = [
-  "Location", "Appartement", "2 pièces", "appartement F2/T2/2 pièces"
+  u"Location", u"Appartement", u"2 pièces", u"appartement F2/T2/2 pièces"
 ]
 
 class SeLogerSpider(scrapy.Spider):
   name = "seloger"
   allowed_domains = ["seloger.com"]
   start_urls = [
-    "http://www.seloger.com/annonces/locations/appartement/torcy-77/beauregard-les-gradins/107404209.htm?ci=770468&idtt=1&idtypebien=1,9"
+    "http://www.seloger.com/annonces/locations/appartement/paris-3eme-75/enfants-rouges/108976823.htm?"
   ]
 
   def get_meta(self, name):
